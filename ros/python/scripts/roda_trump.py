@@ -9,10 +9,15 @@ from sensor_msgs.msg import Image, CompressedImage
 from geometry_msgs.msg import Twist, Vector3, Pose
 from nav_msgs.msg import Odometry
 from cv_bridge import CvBridge, CvBridgeError
+import math
 
 bridge = CvBridge()
 
-trump=cv2.imread('/home/borg/catkin_ws/src/robot18/ros/exemplos_python/scripts/trump.png')
+trump=cv2.imread('/home/borg/catkin_ws/src/robot18/ros/exemplos_python/scripts/trump.jpeg')
+atraso = 1.5
+check_delay = False
+media = []
+centro = []
 
 def auto_canny(image, sigma=0.33):
     # compute the median of the single channel pixel intensities
@@ -28,6 +33,7 @@ def auto_canny(image, sigma=0.33):
 
 
 def image_detector(img, frame):
+    mean = []
     minLines=15
     sift = cv2.xfeatures2d.SIFT_create()
     keyPoint1, descrpt1 = sift.detectAndCompute(img,None)
@@ -41,7 +47,7 @@ def image_detector(img, frame):
 
     lines = flann.knnMatch(descrpt1,descrpt2,k=2)
 
-    centro = (frame.shape[0]//2, frame.shape[1]//2)
+    center = (frame.shape[0]//2, frame.shape[1]//2)
 
     good = []
     for m,n in lines:
@@ -60,28 +66,30 @@ def image_detector(img, frame):
 
         dst = cv2.perspectiveTransform(pts,M)
 
-        for i in range(len(0,dst-1)):
-        	media = []
-        	x += dst[i][0][0]
-        	y += dst[i][0][1]
-        	xmed=x/len(dst)
-        	ymed=y/len(dst)
-        	media.append(xmed,ymed)
+        for i in range(len(dst)):
+            x=0
+            y=0
+            mean = []
+            x += dst[i][0][0]
+            y += dst[i][0][1]
+            xmed=x/len(dst)
+            ymed=y/len(dst)
+            mean.append(xmed)
+            mean.append(ymed)
 
 
         frame = cv2.polylines(frame,[np.int32(dst)],True,255,3,cv2.LINE_AA)
         print("Achou")
 
+    else:
+        print("Não achou")
+        matchesMask = None
+
 
     draw_params = dict(matchColor = (0,255,0),singlePointColor = None,matchesMask = matchesMask,flags=2)
 
-    return media, centro
+    return mean, center
 
-
-media = []
-centro = []
-atraso = 1.5
-check_delay = False
 
 
 def roda_todo_frame(imagem):
