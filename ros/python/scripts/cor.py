@@ -26,7 +26,7 @@ atraso = 1.5E9 # 1 segundo e meio. Em nanossegundos
 
 area = 0.0 # Variavel com a area do maior contorno
 
-check_delay = False # Só usar se os relógios ROS da Raspberry e do Linux desktop estiverem sincronizados. Descarta imagens que chegam atrasadas demais
+check_delay = True # Só usar se os relógios ROS da Raspberry e do Linux desktop estiverem sincronizados. Descarta imagens que chegam atrasadas demais
 
 
 def roda_todo_frame(imagem):
