@@ -9,8 +9,8 @@ from sensor_msgs.msg import Imu
 import transformations
 import math
 
-
 parar = False
+
 def scaneou(dado):
 	# print("Faixa valida: ", dado.range_min , " - ", dado.range_max )
 	# print("Leituras:")
@@ -28,8 +28,8 @@ def scaneou(dado):
 		global parar
 		parar = True
 		#print("entrou")
-		velocidade = Twist(Vector3(0, 0, 0), Vector3(0, 0, 0))
-		velocidade_saida.publish(velocidade)
+		#velocidade = Twist(Vector3(0, 0, 0), Vector3(0, 0, 0))
+		#velocidade_saida.publish(velocidade)
 	else:
 		global parar
 		parar = False
